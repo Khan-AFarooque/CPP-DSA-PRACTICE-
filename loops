@@ -1,0 +1,141 @@
+// loops in c++
+// syntax for for loop
+// for (intialization;condition;updation){
+
+// }
+// #include<iostream>
+// using namespace std;
+// int main(){
+//     cout<<"numbers:";
+//     for(int i=1;i<=10;i++){
+//         cout<<i<<" ";   //print 1 to 10 in same line
+
+//     }
+    
+//     return 0;
+// }
+
+
+// while loop
+// syntax for while 
+// while (condition) {
+//     // Body of the loop
+//     // update expression
+// }
+// we are using  when iteration is unknown
+// #include <iostream>
+// using namespace std;
+// #include<iostream>
+// using namespace std;
+// int main(){
+//     string password;
+
+//     while(password != "bgniofdf"){
+//         cout<<"Enter password: ";
+//         cin>>password;
+
+//     }
+//     cout<<"Login Successfull!!!";
+    
+//     return 0;
+// }
+
+
+
+//  in a do-while loop, the loop body will execute at least once irrespective of the test condition
+
+// do {
+//     // Body of the loop
+//     // Update expression
+// } while (condition);
+// #include <iostream>
+// using namespace std;
+// int main(){
+//     int choice;
+//     int amount;
+//     do{
+//     cout<<"1.check balance\n";
+//     cout<<"2.withdraw money\n";
+//     cout<<"3.exit\n";
+
+//     cout<<"enter choice: ";
+//     cin>>choice;
+//         if(choice==1){
+//         cout<<"enter pin\n";
+//     }
+//     else if(choice==2){
+//         cout<<"enter amount";
+//         cin>>amount;
+//     }
+//     else{
+//         cout<<"Thank you!";
+//     }
+
+
+//     }while(choice!=3);
+
+    
+//     return 0;
+// }
+// #include<iostream>
+// using namespace std;
+// int main(){
+//     int n;
+//     cout<<"enter height of triangle";
+//     cin>>n;
+//     for(int rows=1;rows<=n;rows++){
+//     for(int j=1;j<=n-rows;j++ ){
+//         cout<< " ";
+
+//     }
+//     for(int k=1;k<=(2 * rows -1);k++){
+//         cout<<"*";
+//     }
+//     cout<<endl;
+// }
+    
+//     return 0;
+// }
+// loops control statement
+// 1. break
+// #include <iostream>
+// using namespace std;
+// int main() {
+
+//     for(int i = 1; i <= 10; i++) {
+
+//         if(i == 5) {
+//             break;
+//         }
+
+//         cout << i << " ";
+//     }
+
+//     return 0;
+// }
+
+// continue skip give iteration
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    for(int i = 1; i <= 10; i++) {
+
+        if(i == 5) {
+            continue;
+        }
+
+        cout << i << " ";
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+
+
