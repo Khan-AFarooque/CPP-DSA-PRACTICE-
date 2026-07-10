@@ -1,0 +1,20 @@
+// conditional statement
+// 1:if,else if,else statement
+#include <iostream>
+using namespace std;
+int main()
+{
+    int marks;
+    cout<<"enter marks:";
+    cin>>marks;
+    if(marks>=90){
+        cout<<"EXCELLENT YOUR GRADE IS 'A'!";
+    }
+    else if(marks<90 && marks>=75){
+        cout<<"good YOUR GRADE IS 'B'!";
+    }
+    else{
+        cout<<"improve it";
+    }
+    return 0;
+}
