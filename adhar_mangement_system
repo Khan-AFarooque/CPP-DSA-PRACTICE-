@@ -1,0 +1,66 @@
+
+#include <iostream>
+#include <string>
+using namespace std;
+class adhar
+{
+private:
+  string name[100];
+  string add[100];
+  string adhrNo[100];
+  int age[100];
+  int n;
+public:
+  adhar(){
+    n=0;
+  }
+  void readData()
+  {
+    cout << "Enter the number of people: ";
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+      cout << "Enter name: ";
+      cin >> name[i];
+      cout << "Enter address: ";
+      cin >> add[i];
+      cout << "Enter adhar number: ";
+      cin >> adhrNo[i];
+      cout << "Enter age: ";
+      cin >> age[i];
+    }
+  }
+
+    void displayData()
+    {
+        cout << "Name\tAddress\tAdhar Number\tAge" << endl;
+        for (int i = 0; i < n; i++)
+        {
+        cout << name[i] << "\t" << add[i] << "\t" << adhrNo[i] << "\t" << age[i] << endl;
+        }
+    }
+};
+int main()
+{
+  adhar a;
+  int choice;
+  do{
+    cout << "1. Read Data\n2. Display Data\n3. Exit\nEnter your choice: ";
+    cin >> choice;
+    switch(choice)
+    {
+      case 1:
+        a.readData();
+        break;
+      case 2:
+        a.displayData();
+        break;
+      case 3:
+        cout << "Exiting..." << endl;
+        break;
+      default:
+        cout << "Invalid choice!" << endl;
+    }
+  }while(choice != 3);
+  return 0;
+}
