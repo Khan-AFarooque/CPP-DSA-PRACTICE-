@@ -1,66 +1,207 @@
-
 #include <iostream>
 #include <string>
 using namespace std;
+
 class adhar
 {
 private:
-  string name[100];
-  string add[100];
-  string adhrNo[100];
-  int age[100];
-  int n;
+    string adhrNo[100];
+
 public:
-  adhar(){
-    n=0;
-  }
-  void readData()
-  {
+    string name[100];
+    string add[100];
+    int age[100];
+    int n;
+
+    adhar();
+    void readData();
+    void displayData();
+    void insertData();
+    void updateData();
+    void deleteData();
+};
+
+adhar::adhar()
+{
+    n = 0;
+}
+
+// READ
+void adhar::readData()
+{
     cout << "Enter the number of people: ";
     cin >> n;
+
     for (int i = 0; i < n; i++)
     {
-      cout << "Enter name: ";
-      cin >> name[i];
-      cout << "Enter address: ";
-      cin >> add[i];
-      cout << "Enter adhar number: ";
-      cin >> adhrNo[i];
-      cout << "Enter age: ";
-      cin >> age[i];
-    }
-  }
+        cout << "\nEnter details of person " << i + 1 << endl;
 
-    void displayData()
+        cout << "Enter name: ";
+        cin >> name[i];
+
+        cout << "Enter address: ";
+        cin >> add[i];
+
+        cout << "Enter adhar number: ";
+        cin >> adhrNo[i];
+
+        cout << "Enter age: ";
+        cin >> age[i];
+    }
+}
+
+// DISPLAY
+void adhar::displayData()
+{
+    cout << "\n----- AADHAAR RECORDS -----" << endl;
+
+    cout << "No.\tName\tAddress\tAdhar Number\tAge" << endl;
+
+    for (int i = 0; i < n; i++)
     {
-        cout << "Name\tAddress\tAdhar Number\tAge" << endl;
-        for (int i = 0; i < n; i++)
+        cout << i + 1 << "\t"
+             << name[i] << "\t"
+             << add[i] << "\t"
+             << adhrNo[i] << "\t"
+             << age[i] << endl;
+    }
+}
+
+// INSERT
+void adhar::insertData()
+{
+    if (n >= 100)
+    {
+        cout << "Cannot insert more records." << endl;
+        return;
+    }
+
+    cout << "\nEnter name: ";
+    cin >> name[n];
+
+    cout << "Enter address: ";
+    cin >> add[n];
+
+    cout << "Enter adhar number: ";
+    cin >> adhrNo[n];
+
+    cout << "Enter age: ";
+    cin >> age[n];
+
+    n++;
+
+    cout << "Record inserted successfully." << endl;
+}
+
+// UPDATE
+void adhar::updateData()
+{
+    string searchNo;
+
+    cout << "Enter adhar number to update: ";
+    cin >> searchNo;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (adhrNo[i] == searchNo)
         {
-        cout << name[i] << "\t" << add[i] << "\t" << adhrNo[i] << "\t" << age[i] << endl;
+            cout << "Enter new name: ";
+            cin >> name[i];
+
+            cout << "Enter new address: ";
+            cin >> add[i];
+
+            cout << "Enter new age: ";
+            cin >> age[i];
+
+            cout << "Record updated successfully." << endl;
+            return;
         }
     }
-};
+
+    cout << "Record not found." << endl;
+}
+
+// DELETE
+void adhar::deleteData()
+{
+    string searchNo;
+
+    cout << "Enter adhar number to delete: ";
+    cin >> searchNo;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (adhrNo[i] == searchNo)
+        {
+            for (int j = i; j < n - 1; j++)
+            {
+                name[j] = name[j + 1];
+                add[j] = add[j + 1];
+                adhrNo[j] = adhrNo[j + 1];
+                age[j] = age[j + 1];
+            }
+
+            n--;
+
+            cout << "Record deleted successfully." << endl;
+            return;
+        }
+    }
+
+    cout << "Record not found." << endl;
+}
+
 int main()
 {
-  adhar a;
-  int choice;
-  do{
-    cout << "1. Read Data\n2. Display Data\n3. Exit\nEnter your choice: ";
-    cin >> choice;
-    switch(choice)
+    adhar a;
+
+    // Take initial data first
+    a.readData();
+
+    int choice;
+
+    do
     {
-      case 1:
-        a.readData();
-        break;
-      case 2:
-        a.displayData();
-        break;
-      case 3:
-        cout << "Exiting..." << endl;
-        break;
-      default:
-        cout << "Invalid choice!" << endl;
-    }
-  }while(choice != 3);
-  return 0;
+        cout << "\n====================================";
+        cout << "\n   AADHAAR CARD MANAGEMENT SYSTEM";
+        cout << "\n====================================";
+        cout << "\n1. Display Data";
+        cout << "\n2. Insert Data";
+        cout << "\n3. Update Data";
+        cout << "\n4. Delete Data";
+        cout << "\n5. Exit";
+        cout << "\nEnter your choice: ";
+
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            a.displayData();
+            break;
+
+        case 2:
+            a.insertData();
+            break;
+
+        case 3:
+            a.updateData();
+            break;
+
+        case 4:
+            a.deleteData();
+            break;
+
+        case 5:
+            cout << "Exiting..." << endl;
+            break;
+
+        default:
+            cout << "Invalid choice!" << endl;
+        }
+
+    } while (choice != 5);
+
+    return 0;
 }
