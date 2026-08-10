@@ -97,24 +97,55 @@ void adhar::insertData()
 void adhar::updateData()
 {
     string searchNo;
+    int choice;
 
-    cout << "Enter adhar number to update: ";
+    cout << "\nEnter adhar number to update: ";
     cin >> searchNo;
 
+    // Search for the record
     for (int i = 0; i < n; i++)
     {
         if (adhrNo[i] == searchNo)
         {
-            cout << "Enter new name: ";
-            cin >> name[i];
+            cout << "\nWhat do you want to update?" << endl;
+            cout << "1. Name" << endl;
+            cout << "2. Address" << endl;
+            cout << "3. Age" << endl;
+            cout << "4. Exit" << endl;
+            cout << "Enter your choice: ";
+            cin >> choice;
 
-            cout << "Enter new address: ";
-            cin >> add[i];
+            switch (choice)
+            {
+            case 1:
+                cout << "Enter new name: ";
+                cin >> name[i];
 
-            cout << "Enter new age: ";
-            cin >> age[i];
+                cout << "Name updated successfully." << endl;
+                break;
 
-            cout << "Record updated successfully." << endl;
+            case 2:
+                cout << "Enter new address: ";
+                cin >> add[i];
+
+                cout << "Address updated successfully." << endl;
+                break;
+
+            case 3:
+                cout << "Enter new age: ";
+                cin >> age[i];
+
+                cout << "Age updated successfully." << endl;
+                break;
+
+            case 4:
+                cout << "Update cancelled." << endl;
+                break;
+
+            default:
+                cout << "Invalid choice!" << endl;
+            }
+
             return;
         }
     }
