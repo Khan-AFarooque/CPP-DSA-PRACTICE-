@@ -1,0 +1,138 @@
+#include <iostream>
+using namespace std;
+
+class Sparse
+{
+    int a[10][10];
+    int rows, cols;
+
+public:
+
+    void accept()
+    {
+        cout << "Enter rows: ";
+        cin >> rows;
+
+        cout << "Enter columns: ";
+        cin >> cols;
+
+        cout << "Enter matrix elements:\n";
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                cin >> a[i][j];
+            }
+        }
+    }
+
+    void checkAndDisplay()
+    {
+        int zero = 0;
+        int nonZero = 0;
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if (a[i][j] == 0)
+                    zero++;
+                else
+                    nonZero++;
+            }
+        }
+
+        if (zero > nonZero)
+        {
+            cout << "\nSparse Matrix:\n";
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    cout << a[i][j] << " ";
+                }
+                cout << endl;
+            }
+
+            // Convert sparse matrix into triplet
+            convertToTriplet();
+        }
+        else
+        {
+            cout << "\nNot a Sparse Matrix.";
+        }
+    }
+
+    // NEW FUNCTION
+    void convertToTriplet()
+    {
+        int nonZero = 0;
+
+        // Count non-zero elements
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if (a[i][j] != 0)
+                {
+                    nonZero++;
+                }
+            }
+        }
+
+        // Triplet matrix
+        int triplet[100][3];
+
+        // First row stores:
+        // rows, columns, number of non-zero elements
+        triplet[0][0] = rows;
+        triplet[0][1] = cols;
+        triplet[0][2] = nonZero;
+
+        int k = 1;
+
+        // Store row, column and value
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if (a[i][j] != 0)
+                {
+                    triplet[k][0] = i;
+                    triplet[k][1] = j;
+                    triplet[k][2] = a[i][j];
+
+                    k++;
+                }
+            }
+        }
+
+        // Display triplet matrix
+        cout << "\nTriplet Representation:\n";
+        cout << "Row\tColumn\tValue\n";
+
+        for (int i = 0; i <= nonZero; i++)
+        {
+            cout << triplet[i][0] << "\t"
+                 << triplet[i][1] << "\t"
+                 << triplet[i][2] << endl;
+        }
+    }
+};
+
+int main()
+{
+    Sparse s1, s2;
+
+    cout << "\nEnter First Matrix\n";
+    s1.accept();
+    s1.checkAndDisplay();
+
+    cout << "\n\nEnter Second Matrix\n";
+    s2.accept();
+    s2.checkAndDisplay();
+
+    return 0;
+}
