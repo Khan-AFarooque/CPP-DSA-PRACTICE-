@@ -6,133 +6,436 @@ class Sparse
     int a[10][10];
     int rows, cols;
 
+    int triplet[100][3];
+
 public:
+    void accept();
+    int countNonZero();
+    int checkSparse();
+    void displayMatrix();
 
-    void accept()
-    {
-        cout << "Enter rows: ";
-        cin >> rows;
+    void createTriplet();
+    void convertToTriplet();
+    void transposeTriplet();
+    void fastTransposeTriplet();
 
-        cout << "Enter columns: ";
-        cin >> cols;
-
-        cout << "Enter matrix elements:\n";
-
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                cin >> a[i][j];
-            }
-        }
-    }
-
-    void checkAndDisplay()
-    {
-        int zero = 0;
-        int nonZero = 0;
-
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                if (a[i][j] == 0)
-                    zero++;
-                else
-                    nonZero++;
-            }
-        }
-
-        if (zero > nonZero)
-        {
-            cout << "\nSparse Matrix:\n";
-
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < cols; j++)
-                {
-                    cout << a[i][j] << " ";
-                }
-                cout << endl;
-            }
-
-            // Convert sparse matrix into triplet
-            convertToTriplet();
-        }
-        else
-        {
-            cout << "\nNot a Sparse Matrix.";
-        }
-    }
-
-    // NEW FUNCTION
-    void convertToTriplet()
-    {
-        int nonZero = 0;
-
-        // Count non-zero elements
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                if (a[i][j] != 0)
-                {
-                    nonZero++;
-                }
-            }
-        }
-
-        // Triplet matrix
-        int triplet[100][3];
-
-        // First row stores:
-        // rows, columns, number of non-zero elements
-        triplet[0][0] = rows;
-        triplet[0][1] = cols;
-        triplet[0][2] = nonZero;
-
-        int k = 1;
-
-        // Store row, column and value
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                if (a[i][j] != 0)
-                {
-                    triplet[k][0] = i;
-                    triplet[k][1] = j;
-                    triplet[k][2] = a[i][j];
-
-                    k++;
-                }
-            }
-        }
-
-        // Display triplet matrix
-        cout << "\nTriplet Representation:\n";
-        cout << "Row\tColumn\tValue\n";
-
-        for (int i = 0; i <= nonZero; i++)
-        {
-            cout << triplet[i][0] << "\t"
-                 << triplet[i][1] << "\t"
-                 << triplet[i][2] << endl;
-        }
-    }
+    void addMatrix();
 };
+
+
+// Accept Matrix
+void Sparse::accept()
+{
+    cout << "Enter rows: ";
+    cin >> rows;
+
+    cout << "Enter columns: ";
+    cin >> cols;
+
+    cout << "Enter matrix elements:\n";
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            cin >> a[i][j];
+        }
+    }
+}
+
+
+// Count non-zero elements
+int Sparse::countNonZero()
+{
+    int nonZero = 0;
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (a[i][j] != 0)
+                nonZero++;
+        }
+    }
+
+    return nonZero;
+}
+
+
+// Check Sparse Matrix
+int Sparse::checkSparse()
+{
+    int nonZero = countNonZero();
+    int zero = rows * cols - nonZero;
+
+    if (zero > nonZero)
+    {
+        cout << "\nMatrix is a Sparse Matrix\n";
+        displayMatrix();
+
+        return 1;
+    }
+    else
+    {
+        cout << "\nMatrix is NOT a Sparse Matrix\n";
+
+        return 0;
+    }
+}
+
+
+// Display Matrix
+void Sparse::displayMatrix()
+{
+    cout << "\nMatrix:\n";
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            cout << a[i][j] << " ";
+        }
+
+        cout << endl;
+    }
+}
+
+
+// Create Triplet
+void Sparse::createTriplet()
+{
+    int nonZero = countNonZero();
+
+    triplet[0][0] = rows;
+    triplet[0][1] = cols;
+    triplet[0][2] = nonZero;
+
+    int k = 1;
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (a[i][j] != 0)
+            {
+                triplet[k][0] = i;
+                triplet[k][1] = j;
+                triplet[k][2] = a[i][j];
+
+                k++;
+            }
+        }
+    }
+}
+
+
+// Convert to Triplet
+void Sparse::convertToTriplet()
+{
+    createTriplet();
+
+    int nonZero = triplet[0][2];
+
+    cout << "\nTriplet Representation:\n";
+    cout << "Row\tColumn\tValue\n";
+
+    for (int i = 0; i <= nonZero; i++)
+    {
+        cout << triplet[i][0] << "\t"
+             << triplet[i][1] << "\t"
+             << triplet[i][2] << endl;
+    }
+}
+
+
+// Normal Transpose
+void Sparse::transposeTriplet()
+{
+    createTriplet();
+
+    int nonZero = triplet[0][2];
+
+    int transpose[100][3];
+
+    transpose[0][0] = cols;
+    transpose[0][1] = rows;
+    transpose[0][2] = nonZero;
+
+    int k = 1;
+
+    for (int col = 0; col < cols; col++)
+    {
+        for (int i = 1; i <= nonZero; i++)
+        {
+            if (triplet[i][1] == col)
+            {
+                transpose[k][0] = triplet[i][1];
+                transpose[k][1] = triplet[i][0];
+                transpose[k][2] = triplet[i][2];
+
+                k++;
+            }
+        }
+    }
+
+    cout << "\nTranspose of Triplet Representation:\n";
+    cout << "Row\tColumn\tValue\n";
+
+    for (int i = 0; i <= nonZero; i++)
+    {
+        cout << transpose[i][0] << "\t"
+             << transpose[i][1] << "\t"
+             << transpose[i][2] << endl;
+    }
+}
+
+
+// Fast Transpose
+void Sparse::fastTransposeTriplet()
+{
+    createTriplet();
+
+    int nonZero = triplet[0][2];
+
+    int transpose[100][3];
+
+    // First row of transpose
+    transpose[0][0] = triplet[0][1];
+    transpose[0][1] = triplet[0][0];
+    transpose[0][2] = triplet[0][2];
+
+
+    // Count elements in each column
+    int rowTerms[10] = {0};
+
+    for (int i = 1; i <= nonZero; i++)
+    {
+        rowTerms[triplet[i][1]]++;
+    }
+
+
+    // Find starting position
+    int startingPos[10];
+
+    startingPos[0] = 1;
+
+    for (int i = 1; i < cols; i++)
+    {
+        startingPos[i] =
+            startingPos[i - 1] + rowTerms[i - 1];
+    }
+
+
+    // Place elements directly
+    for (int i = 1; i <= nonZero; i++)
+    {
+        int col = triplet[i][1];
+
+        int pos = startingPos[col];
+
+        transpose[pos][0] = triplet[i][1];
+        transpose[pos][1] = triplet[i][0];
+        transpose[pos][2] = triplet[i][2];
+
+        startingPos[col]++;
+    }
+
+
+    cout << "\nFast Transpose of Triplet Representation:\n";
+    cout << "Row\tColumn\tValue\n";
+
+    for (int i = 0; i <= nonZero; i++)
+    {
+        cout << transpose[i][0] << "\t"
+             << transpose[i][1] << "\t"
+             << transpose[i][2] << endl;
+    }
+}
+
+
+// Addition of Two Matrices
+void Sparse::addMatrix()
+{
+    int b[10][10];
+    int result[10][10];
+
+    int rows2, cols2;
+
+
+    // First Matrix
+    cout << "\nEnter First Matrix\n";
+
+    cout << "Enter rows: ";
+    cin >> rows;
+
+    cout << "Enter columns: ";
+    cin >> cols;
+
+    cout << "Enter matrix elements:\n";
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            cin >> a[i][j];
+        }
+    }
+
+
+    // Second Matrix
+    cout << "\nEnter Second Matrix\n";
+
+    cout << "Enter rows: ";
+    cin >> rows2;
+
+    cout << "Enter columns: ";
+    cin >> cols2;
+
+    cout << "Enter matrix elements:\n";
+
+    for (int i = 0; i < rows2; i++)
+    {
+        for (int j = 0; j < cols2; j++)
+        {
+            cin >> b[i][j];
+        }
+    }
+
+
+    // Check dimensions
+    if (rows != rows2 || cols != cols2)
+    {
+        cout << "\nAddition is NOT possible.\n";
+        cout << "Both matrices must have the same dimensions.\n";
+
+        return;
+    }
+
+
+    // Addition
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            result[i][j] = a[i][j] + b[i][j];
+        }
+    }
+
+
+    // Display result
+    cout << "\nAddition of Two Matrices:\n";
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            cout << result[i][j] << " ";
+        }
+
+        cout << endl;
+    }
+}
+
 
 int main()
 {
-    Sparse s1, s2;
+    Sparse s;
 
-    cout << "\nEnter First Matrix\n";
-    s1.accept();
-    s1.checkAndDisplay();
+    int choice;
 
-    cout << "\n\nEnter Second Matrix\n";
-    s2.accept();
-    s2.checkAndDisplay();
+    do
+    {
+        cout << "\n========== MENU ==========\n";
+        cout << "1. Check Sparse Matrix\n";
+        cout << "2. Convert to Triplet\n";
+        cout << "3. Transpose Triplet\n";
+        cout << "4. Fast Transpose Triplet\n";
+        cout << "5. Addition of Two Matrices\n";
+        cout << "6. Exit\n";
+
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+
+        switch (choice)
+        {
+        case 1:
+
+            s.accept();
+            s.checkSparse();
+
+            break;
+
+
+        case 2:
+
+            s.accept();
+
+            if (s.checkSparse() == 1)
+            {
+                s.convertToTriplet();
+            }
+            else
+            {
+                cout << "\nTriplet conversion is only for Sparse Matrix.\n";
+            }
+
+            break;
+
+
+        case 3:
+
+            s.accept();
+
+            if (s.checkSparse() == 1)
+            {
+                s.transposeTriplet();
+            }
+            else
+            {
+                cout << "\nTranspose is only for Sparse Matrix.\n";
+            }
+
+            break;
+
+
+        case 4:
+
+            s.accept();
+
+            if (s.checkSparse() == 1)
+            {
+                s.fastTransposeTriplet();
+            }
+            else
+            {
+                cout << "\nFast Transpose is only for Sparse Matrix.\n";
+            }
+
+            break;
+
+
+        case 5:
+
+            s.addMatrix();
+
+            break;
+
+
+        case 6:
+
+            cout << "\nExiting...";
+
+            break;
+
+
+        default:
+
+            cout << "\nInvalid Choice!";
+        }
+
+    } while (choice != 6);
+
 
     return 0;
 }
